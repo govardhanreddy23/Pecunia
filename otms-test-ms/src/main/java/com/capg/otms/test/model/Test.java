@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,6 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Test {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long testId; 
 	private String testTitle;
 	@DateTimeFormat(pattern="hh:mm:ss")
@@ -87,10 +90,9 @@ public class Test {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
-	public Test(long testId, String testTitle, LocalTime testDuration, Set<Long> testQuestions, double testTotalMarks,
+	public Test( String testTitle, LocalTime testDuration, Set<Long> testQuestions, double testTotalMarks,
 			double testMarksScored, long currentQuestion, LocalDateTime startTime, LocalDateTime endTime) {
 		super();
-		this.testId = testId;
 		this.testTitle = testTitle;
 		this.testDuration = testDuration;
 		this.testQuestions = testQuestions;
