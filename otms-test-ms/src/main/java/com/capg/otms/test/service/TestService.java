@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.capg.otms.test.exception.TestNotFoundException;
+import com.capg.otms.test.model.Question;
 import com.capg.otms.test.model.Test;
 import com.capg.otms.test.repository.ITestJpaRepo;
 
@@ -18,6 +19,9 @@ public class TestService implements ITestService{
 	
 	@Autowired(required = true)
 	ITestJpaRepo testRepo;
+	
+	@Autowired
+	RestTemplate rt;
 	
 	double score;
 	
@@ -67,6 +71,19 @@ public class TestService implements ITestService{
 		testRepo.save(test);
 		return test;
 }
+
+	@Override
+	public double calculateTotalMarks(long testId) {
+		// TODO Auto-generated method stub
+		double score=0;
+		Test test = testRepo.getOne(testId);
+		List<Long> qIds = new ArrayList(test.getTestQuestions());
+		for(int i=0; i<qIds.size();i++) {
+			Question q = rt.getForObject("http://localhost:8030/question/id/"+qIds.get(i), Question.class);
+			score = score + q.getMarksScored();
+		}
+		return score;
+	}
 	
 	
 }

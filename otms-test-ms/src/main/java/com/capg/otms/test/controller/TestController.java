@@ -63,8 +63,7 @@ public class TestController {
 	public ResponseEntity<Test> updateTest(@RequestBody Test test){
 		Test newTest=service.updateTest(test);
 		return new ResponseEntity<Test>(test,HttpStatus.OK);
-	}
-	
+	}	
 	@PutMapping("/assign/{testId}/question/{questionId}")
 	public Test assignQuestion(@PathVariable long testId, @PathVariable long questionId) {
 		
@@ -84,6 +83,10 @@ public class TestController {
 	if(deleted.getTestId()==testId)
 		return new ResponseEntity<Test>(HttpStatus.OK);
 	  return new ResponseEntity<Test>(HttpStatus.NOT_FOUND);
-	
+	}
+	@GetMapping("/calculate/{testId}")
+	public ResponseEntity<Double> calculateTotalMarks(@PathVariable long testId){
+		double result=service.calculateTotalMarks(testId);
+		return new ResponseEntity<Double>(result,HttpStatus.OK);
 	}
 }

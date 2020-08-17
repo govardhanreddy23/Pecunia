@@ -11,4 +11,5 @@ public interface ITestService{
 		public Test deleteTest(long testId);
 		public Test getTest(long testId);
 		public List<Test> fetchAllTests();
+		double calculateTotalMarks(long testId);
 	}
