@@ -78,6 +78,18 @@ package com.capg.otms.user.controller;
 			return "Hello Users";
 			}
 		
+		@PostMapping("/admin/add/test")
+		public Test addTest(@RequestBody Test test) {
+			return service.addTest(test);
+		}
+	@PutMapping("/admin/update/test")
+		public Test updateTest(@RequestBody Test test) throws RestClientException, URISyntaxException {
+			return service.updateTest(test);
+		}
+	@DeleteMapping("/admin/delete/test/id/{testId}")
+		public Test deleteTest(@PathVariable long testId) throws RestClientException, URISyntaxException {
+			return service.deleteTest(testId);
+		}
 	}
 
 

@@ -21,6 +21,10 @@ package com.capg.otms.user.service;
 		User getUser(long userId);
 		List<User> getAllUsers();
 		User getUserByName(String userName);
+		Test deleteTest(long testId) throws RestClientException, URISyntaxException;
+		Test updateTest(Test test) throws RestClientException, URISyntaxException;
+		Test addTest(Test test);
+		
 		
 	}
 

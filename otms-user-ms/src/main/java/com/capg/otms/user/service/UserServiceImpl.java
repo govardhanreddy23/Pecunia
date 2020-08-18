@@ -24,6 +24,10 @@ package com.capg.otms.user.service;
 		@Autowired
 		IUserRepo repo;
 		
+		@Autowired
+		RestTemplate rt;
+		
+		
 		
 
 		@Override
@@ -71,6 +75,41 @@ package com.capg.otms.user.service;
 			// TODO Auto-generated method stub
 			return repo.getByUserName(userName);
 			}
+		
+		public boolean assignTest(long userId, long testId) {
+			// TODO Auto-generated method stub
+			User user=repo.getOne(userId);
+			if(user==null) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			}
+			user.setUserTest(testId);
+			return true;
+			
+		}
+		
+		@Override
+		public Test deleteTest(long testId) throws RestClientException, URISyntaxException {
+			// TODO Auto-generated method stub
+			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
+			//test = rt.postForObject("http://localhost:8020/test/delete/id/", test, Test.class);
+			rt.delete(new URI("http://localhost:8020/test/delete/id/"+testId));
+			return test;
+		}
+		
+		@Override
+		public Test updateTest(Test test) throws RestClientException, URISyntaxException {
+			// TODO Auto-generated method stub
+			if(test!=null) {
+				rt.put(new URI("http://localhost:8020/test/update/"), test);
+			}
+			return test;
+		}
+		
+		@Override
+		public Test addTest(Test test) {
+			// TODO Auto-generated method stub
+			return rt.postForObject("http://localhost:8020/test/add", test, Test.class);
+		}
 
 	}
 
