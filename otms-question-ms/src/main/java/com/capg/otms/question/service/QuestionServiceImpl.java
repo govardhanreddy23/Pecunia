@@ -32,10 +32,6 @@ public class QuestionServiceImpl implements IQuestionService {
 	@Override
 	@Transactional
 	public Question addQuestion(Question question) {
-		System.out.println(question);
-		if(questionRepo.existsById(question.getQuestionId())) {
-			throw new RuntimeException("Question Already Exists");
-		}
 		return questionRepo.save(question);
 	}
 	
@@ -50,14 +46,25 @@ public class QuestionServiceImpl implements IQuestionService {
 	
 	@Override
 	@Transactional
-	public Question updateQuestion(Question newQuestion) {
-		Question question=questionRepo.getOne(newQuestion.getQuestionId());		
-		question.setQuestionTitle(newQuestion.getQuestionTitle());
-		question.setQuestionOptions(newQuestion.getQuestionOptions());
-		question.setQuestionMarks(newQuestion.getQuestionMarks());
-		question.setQuestionAnswer(newQuestion.getQuestionAnswer());
+	public Question updateOption(Question newQuestion,long questionId) {
+		Question question=questionRepo.getOne(questionId);
+		if(question!=null) {
+			question.setChosenAnswer(newQuestion.getChosenAnswer());
+		}
 		questionRepo.save(question);
 		return question;
 	}
-	
+	@Override
+	@Transactional
+	public Question updateQuestion(Question newQuestion,long questionId) {
+		Question question=questionRepo.getOne(questionId);
+		if(question!=null) {
+			question.setQuestionTitle(newQuestion.getQuestionTitle());
+			question.setQuestionOptions(newQuestion.getQuestionOptions());
+			question.setQuestionMarks(newQuestion.getQuestionMarks());
+			question.setQuestionAnswer(newQuestion.getQuestionAnswer());
+		}
+		questionRepo.save(question);
+		return question;
+	}
 }

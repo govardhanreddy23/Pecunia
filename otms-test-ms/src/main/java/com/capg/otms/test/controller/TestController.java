@@ -89,4 +89,18 @@ public class TestController {
 		double result=service.calculateTotalMarks(testId);
 		return new ResponseEntity<Double>(result,HttpStatus.OK);
 	}
+	@GetMapping("/question/{questionId}")
+	public ResponseEntity<Question> fetchQuestion(@PathVariable long questionId){
+		Question question = service.fetchQuestion(questionId);
+		return new ResponseEntity<Question>(question,HttpStatus.OK);
+	}
+	@PutMapping("/setTestQuestions/testId/{testId}")
+	public ResponseEntity<Test> setTestQuestions(@PathVariable long testId, @RequestBody Set<Long> qIds){
+		Test test = service.setTestQuestions(testId, qIds);
+		return new ResponseEntity<>(test,HttpStatus.ACCEPTED);
+	}
+	@GetMapping("/questions/{testId}")
+	public List<Question> getTestQuestions(@PathVariable long testId){
+		return service.getTestQuestions(testId);
+	}
 }

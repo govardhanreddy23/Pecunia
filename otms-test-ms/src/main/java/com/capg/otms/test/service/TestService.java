@@ -2,6 +2,7 @@ package com.capg.otms.test.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -84,6 +85,33 @@ public class TestService implements ITestService{
 		}
 		return score;
 	}
-	
-	
+	public Question fetchQuestion(long questionId) {
+		Question question = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
+		return question;
+	}
+	@Override
+	public List<Question> getTestQuestions(long testId) {
+		// TODO Auto-generated method stub
+		Test test = testRepo.getOne(testId);
+		List<Long> qIds = new ArrayList(test.getTestQuestions());
+		List<Question> questions = new ArrayList<>();
+		for(int i=0; i<qIds.size();i++) {
+			Question q = rt.getForObject("http://localhost:8030/question/id/"+qIds.get(i), Question.class);
+			try {
+			questions.add(q);
+			}
+			catch(Exception e) {
+				System.err.println("Question unavailable to add with id:"+qIds.indexOf(q));
+			}
+			//score = score + q.getMarksScored();
+		}
+		return questions;
+	}
+	@Override
+	public Test setTestQuestions(long testId, Set<Long> qIds) {
+		Test test = testRepo.getOne(testId);
+		test.setTestQuestions(qIds);
+		testRepo.save(test);
+		return test;
+	}
 }

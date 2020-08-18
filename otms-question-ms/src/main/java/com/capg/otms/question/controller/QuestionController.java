@@ -41,13 +41,18 @@ public class QuestionController {
 		service.addQuestion(question);
 		return new ResponseEntity<Question>(question,HttpStatus.CREATED);
 	}
-	
-	@PutMapping("/update")
-	public ResponseEntity<Question> updateQuestion(@RequestBody Question question){
-		Question newQuestion=service.updateQuestion(question);
+	@PutMapping("/update/{questionId}")
+	public ResponseEntity<Question> updateQuestion(@RequestBody Question question, @PathVariable long questionId){
+		Question newQuestion=service.updateQuestion(question,questionId);
 		return new ResponseEntity<Question>(question,HttpStatus.OK);	
 	}
-		
+	
+	@PutMapping("/updateOption/{questionId}")
+	public ResponseEntity<Question> updateOption(@RequestBody Question question, @PathVariable long questionId){
+		Question newQuestion=service.updateOption(question,questionId);
+		return new ResponseEntity<Question>(question,HttpStatus.OK);	
+	}
+	
 	@DeleteMapping("/delete/id/{questionId}")
 	public ResponseEntity<Question> deleteQuestion(@PathVariable long questionId) {
 		Question deleted = service.deleteQuestion(questionId);

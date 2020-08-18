@@ -12,8 +12,10 @@ public interface IQuestionService {
 	 
 	 Question addQuestion(Question question);
 	 
-	 Question updateQuestion(Question question);
-	 
 	 Question deleteQuestion(long questionId);
+
+	Question updateQuestion(Question newQuestion, long questionId);
+
+	Question updateOption(Question newQuestion, long questionId);
 
 }
