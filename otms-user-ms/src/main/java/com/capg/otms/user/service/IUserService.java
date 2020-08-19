@@ -24,6 +24,10 @@ package com.capg.otms.user.service;
 		Test deleteTest(long testId) throws RestClientException, URISyntaxException;
 		Test updateTest(Test test) throws RestClientException, URISyntaxException;
 		Test addTest(Test test);
+		Question addQuestions(long testId, Question question) throws RestClientException, URISyntaxException;
+		Question deleteQuestions(long testId, long QuestionId) throws RestClientException, URISyntaxException;
+		Question updateQuestions(long testId, long questionId, Question question)
+				throws RestClientException, URISyntaxException;
 		
 		
 	}

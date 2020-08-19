@@ -90,6 +90,25 @@ package com.capg.otms.user.controller;
 		public Test deleteTest(@PathVariable long testId) throws RestClientException, URISyntaxException {
 			return service.deleteTest(testId);
 		}
+	
+	@PostMapping("/add/question/test-id/{testId}")
+	public Question addQuestion(@PathVariable long testId, @RequestBody Question question) throws RestClientException, URISyntaxException
+	{
+		return service.addQuestions(testId, question);
+	}
+	
+	@PutMapping("/update/question/{testId}/{questionId}")
+	public Question updateQuestion(@PathVariable long testId, @PathVariable long questionId,@RequestBody Question question) throws RestClientException, URISyntaxException
+	{
+		return service.updateQuestions(testId, questionId,question);
+	}
+	
+	
+   @DeleteMapping("/delete/question/{testId}/{questionId}")
+	public Question deleteQuestion(@PathVariable long testId, @PathVariable long questionId) throws RestClientException, URISyntaxException
+	{
+		return service.deleteQuestions(testId, questionId);
+	}
 	}
 
 

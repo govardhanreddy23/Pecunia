@@ -110,6 +110,39 @@ package com.capg.otms.user.service;
 			// TODO Auto-generated method stub
 			return rt.postForObject("http://localhost:8020/test/add", test, Test.class);
 		}
+		
+		@Override
+		public Question addQuestions(long testId, Question question) throws RestClientException, URISyntaxException {
+			// TODO Auto-generated method stub
+			Question q=rt.postForObject("http://localhost:8030/question/add", question, Question.class);
+			rt.put(new URI("http://localhost:8020/test/assign/"+testId+"/question/"+q.getQuestionId()),null);
+			return q;
+		}
+		
+		@Override
+		public Question updateQuestions(long testId, long questionId,Question question) throws RestClientException, URISyntaxException {
+			
+			Question updateQuestion = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
+			if(question.getQuestionId()==updateQuestion.getQuestionId()) {
+				
+			rt.put(new URI("http://localhost:8030/question/update/"+questionId),updateQuestion);
+			rt.put(new URI("http://localhost:8020/test/assign/"+testId+"/question/"+questionId),null);
+			}
+			return question;
+		}
+		
+		@Override
+		public Question deleteQuestions(long testId, long questionId) throws RestClientException, URISyntaxException {
+		
+			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
+			Question question = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
+			if(test!=null) {
+				rt.delete(new URI("http://localhost:8030/question/delete/id/"+questionId));
+				//test.getTestQuestions().remove(question.getQuestionId());
+			}
+			test.getTestQuestions().remove(questionId);
+			return question;
+		}
 
 	}
 
