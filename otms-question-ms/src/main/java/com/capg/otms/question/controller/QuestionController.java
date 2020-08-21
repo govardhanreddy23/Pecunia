@@ -26,40 +26,30 @@ public class QuestionController {
 	
 	@GetMapping("/all")
 	public ResponseEntity<List<Question>> getAllQuestions(){
-		List<Question> allQuestions=service.getListOfQuestions();
-		return new ResponseEntity<List<Question>>(allQuestions,HttpStatus.OK);
+		return service.getListOfQuestions();
 	}
 	
 	@GetMapping("/id/{questionId}")	
 	public ResponseEntity<Question> getQuestionById(@PathVariable long questionId){
-		Question question= service.getQuestionById(questionId);
-		return new ResponseEntity<Question>(question,HttpStatus.OK);
+		return service.getQuestionById(questionId);
 	}
 	
 	@PostMapping("/add")
 	public ResponseEntity<Question> addQuestion(@RequestBody Question question){
-		service.addQuestion(question);
-		return new ResponseEntity<Question>(question,HttpStatus.CREATED);
+		return service.addQuestion(question);
 	}
 	@PutMapping("/update/{questionId}")
 	public ResponseEntity<Question> updateQuestion(@RequestBody Question question, @PathVariable long questionId){
-		Question newQuestion=service.updateQuestion(question,questionId);
-		return new ResponseEntity<Question>(question,HttpStatus.OK);	
+		return service.updateQuestion(question,questionId);	
 	}
 	
 	@PutMapping("/updateOption/{questionId}")
 	public ResponseEntity<Question> updateOption(@RequestBody Question question, @PathVariable long questionId){
-		Question newQuestion=service.updateOption(question,questionId);
-		return new ResponseEntity<Question>(question,HttpStatus.OK);	
+		return service.updateOption(question,questionId);	
 	}
 	
 	@DeleteMapping("/delete/id/{questionId}")
 	public ResponseEntity<Question> deleteQuestion(@PathVariable long questionId) {
-		Question deleted = service.deleteQuestion(questionId);
-		if(deleted.getQuestionId()==questionId)
-			return new ResponseEntity<Question>(HttpStatus.OK);
-		return new ResponseEntity<Question>(HttpStatus.NOT_FOUND);
-		
+		return service.deleteQuestion(questionId);
 	}
-
 }

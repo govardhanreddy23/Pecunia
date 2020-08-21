@@ -3,6 +3,8 @@ package com.capg.otms.question.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,47 +18,53 @@ public class QuestionServiceImpl implements IQuestionService {
 	QuestionRepository questionRepo;
 	
 	@Override
-	public List<Question> getListOfQuestions() {
+	public ResponseEntity<List<Question>> getListOfQuestions() {
 		// TODO Auto-generated method stub
-		return questionRepo.findAll();
+		return new ResponseEntity<>(questionRepo.findAll(),HttpStatus.OK);
 	}
 	
 	@Override
-	public Question getQuestionById(long QuestionId) {
-		if(!questionRepo.existsById(QuestionId)) {
-			throw new QuestionNotFoundException("Question with id : ["+QuestionId+"] Not Found"); 
+	public ResponseEntity<Question> getQuestionById(long questionId) {
+		if(!questionRepo.existsById(questionId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
 		}
-		return questionRepo.getOne(QuestionId);
+		return new ResponseEntity<>(questionRepo.getOne(questionId),HttpStatus.OK);
 	}
 	
 	@Override
 	@Transactional
-	public Question addQuestion(Question question) {
-		return questionRepo.save(question);
+	public ResponseEntity<Question> addQuestion(Question question) {
+		return new ResponseEntity<>(questionRepo.save(question),HttpStatus.OK);	
 	}
 	
 	@Override
 	@Transactional
-	public Question deleteQuestion(long questionId) {
-		Question deletedQuestion = questionRepo.getOne(questionId);
-		//return !questionRepo.existsById(questionId);
+	public ResponseEntity deleteQuestion(long questionId) {
+		if(!questionRepo.existsById(questionId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+		}
 		questionRepo.deleteById(questionId);
-		return deletedQuestion;
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@Override
 	@Transactional
-	public Question updateOption(Question newQuestion,long questionId) {
+	public ResponseEntity<Question> updateOption(Question newQuestion,long questionId) {
+		if(!questionRepo.existsById(questionId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+		}
 		Question question=questionRepo.getOne(questionId);
 		if(question!=null) {
 			question.setChosenAnswer(newQuestion.getChosenAnswer());
 		}
-		questionRepo.save(question);
-		return question;
+		return new ResponseEntity<>(questionRepo.save(question),HttpStatus.OK);
 	}
 	@Override
 	@Transactional
-	public Question updateQuestion(Question newQuestion,long questionId) {
+	public ResponseEntity<Question> updateQuestion(Question newQuestion,long questionId) {
+		if(!questionRepo.existsById(questionId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+		}
 		Question question=questionRepo.getOne(questionId);
 		if(question!=null) {
 			question.setQuestionTitle(newQuestion.getQuestionTitle());
@@ -64,7 +72,6 @@ public class QuestionServiceImpl implements IQuestionService {
 			question.setQuestionMarks(newQuestion.getQuestionMarks());
 			question.setQuestionAnswer(newQuestion.getQuestionAnswer());
 		}
-		questionRepo.save(question);
-		return question;
+		return new ResponseEntity<>(questionRepo.save(question),HttpStatus.OK);
 	}
 }

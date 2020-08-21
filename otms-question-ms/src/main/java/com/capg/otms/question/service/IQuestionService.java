@@ -2,20 +2,22 @@ package com.capg.otms.question.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.capg.otms.question.model.Question;
 
 public interface IQuestionService {
 	 
-	 List<Question> getListOfQuestions();
+	ResponseEntity<List<Question>> getListOfQuestions();
 	 
-	 Question getQuestionById(long QuestionId);
+	 ResponseEntity<Question> getQuestionById(long QuestionId);
 	 
-	 Question addQuestion(Question question);
+	 ResponseEntity<Question> addQuestion(Question question);
 	 
-	 Question deleteQuestion(long questionId);
+	 ResponseEntity deleteQuestion(long questionId);
 
-	Question updateQuestion(Question newQuestion, long questionId);
+	 ResponseEntity<Question> updateQuestion(Question newQuestion, long questionId);
 
-	Question updateOption(Question newQuestion, long questionId);
+	 ResponseEntity<Question> updateOption(Question newQuestion, long questionId);
 
 }

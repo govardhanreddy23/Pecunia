@@ -27,8 +27,8 @@ public class Test {
 	@ElementCollection
 	private Set<Long> testQuestions;
 	private double testTotalMarks;
-	private double testMarksScored;
-	private long currentQuestion;
+	private double testMarksScored=0;
+	private long currentQuestion=1;
 	@DateTimeFormat(pattern="yyyy/MM/ddThh:mm:ss")
 	private LocalDateTime startTime;
 	@DateTimeFormat(pattern="yyyy/MM/ddThh:mm:ss")
