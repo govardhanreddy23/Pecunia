@@ -101,6 +101,7 @@ public class TestService implements ITestService{
 	public ResponseEntity<Question> fetchQuestion(long questionId) {
 		try {
 		Question question = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
+		//System.out.println(question);
 		if(question==null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
