@@ -7,8 +7,13 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.capg.otms.test.exception.TestNotFoundException;
 import com.capg.otms.test.model.Question;
@@ -27,40 +32,42 @@ public class TestService implements ITestService{
 	double score;
 	
 	@Override
-	public List<Test> fetchAllTests(){	
-		return testRepo.findAll();
+	public ResponseEntity<List<Test>> fetchAllTests(){	
+		return new ResponseEntity<>(testRepo.findAll(),HttpStatus.OK);
 	}
 	
 	@Override
-	public Test getTest(long testId) {
+	public ResponseEntity<Test> getTest(long testId) {
 		
 		if(!testRepo.existsById(testId)) {
-			throw new TestNotFoundException("Test with id : ["+testId+"] Not Found"); 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return testRepo.getOne(testId);
+		return new ResponseEntity<>(testRepo.getOne(testId),HttpStatus.OK);
 	}
 
   @Override
  @Transactional
-  public Test addtest (Test test) {
-	  System.out.println(test);
-	  if(testRepo.existsById(test.getTestId())) {
-		 throw new RuntimeException("Test Already Exits");
-	  }
-	 return testRepo.save(test);
+  public ResponseEntity<Test> addtest (Test test) {
+	  return new ResponseEntity<>(testRepo.save(test),HttpStatus.OK);
   }	
   
 	@Override
 	@Transactional
-	public Test deleteTest(long testId) {
-		Test deletedTest=testRepo.getOne(testId);
+	public ResponseEntity deleteTest(long testId) {
+		if(!testRepo.existsById(testId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		testRepo.deleteById(testId);
-		return deletedTest;
+		return new ResponseEntity(HttpStatus.OK);
 	}
 	
+	@Override
 	@Transactional
-	public Test updateTest(Test newTestData) {
-		Test test=testRepo.getOne(newTestData.getTestId());		
+	public ResponseEntity<Test> updateTest(Test newTestData,long testId) {
+		if(!testRepo.existsById(testId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		Test test=testRepo.getOne(testId);		
 		test.setTestTitle(newTestData.getTestTitle());
 		test.setTestDuration(newTestData.getTestDuration());
 		test.setTestQuestions(newTestData.getTestQuestions());
@@ -69,49 +76,87 @@ public class TestService implements ITestService{
 		test.setCurrentQuestion(newTestData.getCurrentQuestion());
 		test.setStartTime(newTestData.getStartTime());
 		test.setEndTime(newTestData.getEndTime());
-		testRepo.save(test);
-		return test;
+		return new ResponseEntity<>(testRepo.save(test),HttpStatus.OK);
 }
 
 	@Override
-	public double calculateTotalMarks(long testId) {
-		// TODO Auto-generated method stub
+	public ResponseEntity<Double> calculateTotalMarks(long testId) {
+		if(!testRepo.existsById(testId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		double score=0;
 		Test test = testRepo.getOne(testId);
 		List<Long> qIds = new ArrayList(test.getTestQuestions());
 		for(int i=0; i<qIds.size();i++) {
 			Question q = rt.getForObject("http://localhost:8030/question/id/"+qIds.get(i), Question.class);
+			if(q==null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			else {
 			score = score + q.getMarksScored();
-		}
-		return score;
-	}
-	public Question fetchQuestion(long questionId) {
-		Question question = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
-		return question;
+		}}
+		return new ResponseEntity<>(score,HttpStatus.OK);
 	}
 	@Override
-	public List<Question> getTestQuestions(long testId) {
-		// TODO Auto-generated method stub
+	public ResponseEntity<Question> fetchQuestion(long questionId) {
+		try {
+		Question question = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
+		if(question==null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(question,HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+	}
+	@Override
+	public ResponseEntity<List<Question>> getTestQuestions(long testId) {
+		if(!testRepo.existsById(testId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		Test test = testRepo.getOne(testId);
 		List<Long> qIds = new ArrayList(test.getTestQuestions());
 		List<Question> questions = new ArrayList<>();
 		for(int i=0; i<qIds.size();i++) {
 			Question q = rt.getForObject("http://localhost:8030/question/id/"+qIds.get(i), Question.class);
-			try {
-			questions.add(q);
+			if(q==null) {
+				return new ResponseEntity(HttpStatus.NOT_FOUND);
 			}
-			catch(Exception e) {
-				System.err.println("Question unavailable to add with id:"+qIds.indexOf(q));
+			else {
+				questions.add(q);
 			}
-			//score = score + q.getMarksScored();
 		}
-		return questions;
+		return new ResponseEntity<>(questions,HttpStatus.OK);
 	}
 	@Override
-	public Test setTestQuestions(long testId, Set<Long> qIds) {
+	public ResponseEntity<Test> setTestQuestions(long testId, Set<Long> qIds) {
+		if(!testRepo.existsById(testId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		try {
 		Test test = testRepo.getOne(testId);
+		List<Long> qIds2 = new ArrayList(qIds);
+		for(int i=0; i<qIds2.size();i++) {
+			Question q = rt.getForObject("http://localhost:8030/question/id/"+qIds2.get(i), Question.class);
+			if(q==null) {
+				return new ResponseEntity(HttpStatus.NOT_FOUND);
+			}
+		}
 		test.setTestQuestions(qIds);
-		testRepo.save(test);
-		return test;
+		
+		return new ResponseEntity<>(testRepo.save(test),HttpStatus.OK);
+		}catch(HttpClientErrorException e) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@Override
+public ResponseEntity<Test> assignQuestion(long testId, long questionId) {
+		if(!testRepo.existsById(testId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		Test test = testRepo.getOne(testId);
+		test.getTestQuestions().add(questionId);
+		 return new ResponseEntity<>(testRepo.save(test),HttpStatus.OK);
 	}
 }

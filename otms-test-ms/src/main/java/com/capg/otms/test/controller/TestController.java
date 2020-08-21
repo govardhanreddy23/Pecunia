@@ -46,61 +46,43 @@ public class TestController {
 	
 	@GetMapping("/id/{testId}")
 	public ResponseEntity<Test> getTest(@PathVariable long testId){
-	Test test=service.getTest(testId);	
-	return new ResponseEntity<Test>(test,HttpStatus.OK);
+	return service.getTest(testId);	
 	}
 	@GetMapping("/all")
 	public ResponseEntity<List<Test>> getAllTests(){
-	List<Test> allTests=service.fetchAllTests();	
-	return new ResponseEntity<List<Test>>(allTests,HttpStatus.OK);
+	return service.fetchAllTests();	
 	}
 	@PostMapping("/add")
 	public ResponseEntity<Test> addTest(@RequestBody Test test){
-		service.addtest(test);
-		return new ResponseEntity<Test>(test,HttpStatus.CREATED);
+		return service.addtest(test);
 	}
-	@PutMapping("/update")
-	public ResponseEntity<Test> updateTest(@RequestBody Test test){
-		Test newTest=service.updateTest(test);
-		return new ResponseEntity<Test>(test,HttpStatus.OK);
+	@PutMapping("/update/{testId}")
+	public ResponseEntity<Test> updateTest(@RequestBody Test test,@PathVariable long testId){
+		return service.updateTest(test ,testId);
 	}	
 	@PutMapping("/assign/{testId}/question/{questionId}")
-	public Test assignQuestion(@PathVariable long testId, @PathVariable long questionId) {
-		
-		Test test=service.getTest(testId);
-		if(test!=null) {
-		test.getTestQuestions().add(questionId);
-		return service.updateTest(test);
-		}
-		else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<Test> assignQuestion(@PathVariable long testId, @PathVariable long questionId) {
+		return service.assignQuestion(testId, questionId);
 	}
 	
 	@DeleteMapping("delete/id/{testId}")
 	public ResponseEntity<Test> deleteTest(@PathVariable long testId){
-	Test deleted = service.deleteTest(testId);
-	if(deleted.getTestId()==testId)
-		return new ResponseEntity<Test>(HttpStatus.OK);
-	  return new ResponseEntity<Test>(HttpStatus.NOT_FOUND);
+	return service.deleteTest(testId);
 	}
 	@GetMapping("/calculate/{testId}")
 	public ResponseEntity<Double> calculateTotalMarks(@PathVariable long testId){
-		double result=service.calculateTotalMarks(testId);
-		return new ResponseEntity<Double>(result,HttpStatus.OK);
+		return service.calculateTotalMarks(testId);
 	}
 	@GetMapping("/question/{questionId}")
 	public ResponseEntity<Question> fetchQuestion(@PathVariable long questionId){
-		Question question = service.fetchQuestion(questionId);
-		return new ResponseEntity<Question>(question,HttpStatus.OK);
+		return service.fetchQuestion(questionId);
 	}
 	@PutMapping("/setTestQuestions/testId/{testId}")
 	public ResponseEntity<Test> setTestQuestions(@PathVariable long testId, @RequestBody Set<Long> qIds){
-		Test test = service.setTestQuestions(testId, qIds);
-		return new ResponseEntity<>(test,HttpStatus.ACCEPTED);
+		return service.setTestQuestions(testId, qIds);
 	}
 	@GetMapping("/questions/{testId}")
-	public List<Question> getTestQuestions(@PathVariable long testId){
+	public ResponseEntity<List<Question>> getTestQuestions(@PathVariable long testId){
 		return service.getTestQuestions(testId);
 	}
 }
