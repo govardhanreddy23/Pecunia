@@ -5,10 +5,7 @@ import java.time.LocalTime;
 import java.util.Set;
 
 import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class Test {
@@ -104,7 +101,4 @@ public class Test {
 				+ testMarksScored + ", currentQuestion=" + currentQuestion + ", startTime=" + startTime + ", endTime="
 				+ endTime + "]";
 	}
-		
-	
-		
 }
