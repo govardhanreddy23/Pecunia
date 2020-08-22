@@ -59,10 +59,6 @@ package com.capg.otms.user.controller;
 			return service.getAllUsers();
 		}
 		
-		
-		
-	
-		
 		@GetMapping("/admin/message")
 		public String getMessage() {
 			return "Hello Admin";
@@ -102,14 +98,13 @@ package com.capg.otms.user.controller;
 	{
 		return service.updateQuestions(testId, questionId,question);
 	}
-	
-	
+				
    @DeleteMapping("/delete/question/{testId}/{questionId}")
 	public Question deleteQuestion(@PathVariable long testId, @PathVariable long questionId) throws RestClientException, URISyntaxException
 	{
 		return service.deleteQuestions(testId, questionId);
 	}
-	}
-
+   }
+	
 
 

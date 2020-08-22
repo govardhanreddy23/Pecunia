@@ -1,6 +1,5 @@
 package com.capg.otms.user.service;
 
-
 	import java.net.URI;
 	import java.net.URISyntaxException;
 	import java.util.List;
@@ -19,26 +18,20 @@ package com.capg.otms.user.service;
 
 	@Service
 	public class UserServiceImpl implements IUserService {
-		
-		
+				
 		@Autowired
 		IUserRepo repo;
 		
 		@Autowired
 		RestTemplate rt;
-		
-		
-		
 
 		@Override
 		public User addUser(User user) {
-			// TODO Auto-generated method stub
 			return repo.save(user);
 		}
 
 		@Override
 		public User deleteUser(long userId) {
-			// TODO Auto-generated method stub
 			User deletedUser = repo.getOne(userId);
 			repo.deleteById(userId);
 			return deletedUser;
@@ -46,7 +39,6 @@ package com.capg.otms.user.service;
 
 		@Override
 		public User updateUser(User newUser) {
-			// TODO Auto-generated method stub
 			User user = repo.getOne(newUser.getUserId());
 			user.setUserName(newUser.getUserName());
 			user.setUserPassword(newUser.getUserPassword());
@@ -57,27 +49,20 @@ package com.capg.otms.user.service;
 
 		@Override
 		public User getUser(long userId) {
-			// TODO Auto-generated method stub
 			return repo.getOne(userId);
 			}
 
-		
-		
-
 		@Override
 		public List<User> getAllUsers() {
-			// TODO Auto-generated method stub
 			return repo.findAll();
 		}
 		
 		@Override
 		public User getUserByName(String userName) {
-			// TODO Auto-generated method stub
 			return repo.getByUserName(userName);
 			}
 		
 		public boolean assignTest(long userId, long testId) {
-			// TODO Auto-generated method stub
 			User user=repo.getOne(userId);
 			if(user==null) {
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -89,16 +74,13 @@ package com.capg.otms.user.service;
 		
 		@Override
 		public Test deleteTest(long testId) throws RestClientException, URISyntaxException {
-			// TODO Auto-generated method stub
 			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
-			//test = rt.postForObject("http://localhost:8020/test/delete/id/", test, Test.class);
 			rt.delete(new URI("http://localhost:8020/test/delete/id/"+testId));
 			return test;
 		}
 		
 		@Override
 		public Test updateTest(Test test) throws RestClientException, URISyntaxException {
-			// TODO Auto-generated method stub
 			if(test!=null) {
 				rt.put(new URI("http://localhost:8020/test/update/"), test);
 			}
@@ -107,13 +89,11 @@ package com.capg.otms.user.service;
 		
 		@Override
 		public Test addTest(Test test) {
-			// TODO Auto-generated method stub
 			return rt.postForObject("http://localhost:8020/test/add", test, Test.class);
 		}
 		
 		@Override
 		public Question addQuestions(long testId, Question question) throws RestClientException, URISyntaxException {
-			// TODO Auto-generated method stub
 			Question q=rt.postForObject("http://localhost:8030/question/add", question, Question.class);
 			rt.put(new URI("http://localhost:8020/test/assign/"+testId+"/question/"+q.getQuestionId()),null);
 			return q;

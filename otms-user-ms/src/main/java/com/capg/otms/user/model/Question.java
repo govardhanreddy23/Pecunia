@@ -3,8 +3,7 @@ package com.capg.otms.user.model;
    import java.util.List;
 
 	public class Question {
-
-
+		
 		private long questionId;
 		
 		private List<String> questionOptions;
@@ -83,10 +82,6 @@ package com.capg.otms.user.model;
 		public void setMarksScored(double marksScored) {
 			this.marksScored = marksScored;
 		}
-		
-		
-		
-		
 	}
 
 
