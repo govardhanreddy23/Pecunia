@@ -10,12 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.capg.otms.test.exception.TestNotFoundException;
 import com.capg.otms.test.model.Question;
 import com.capg.otms.test.model.Test;
 import com.capg.otms.test.repository.ITestJpaRepo;
@@ -101,7 +97,6 @@ public class TestService implements ITestService{
 	public ResponseEntity<Question> fetchQuestion(long questionId) {
 		try {
 		Question question = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
-		//System.out.println(question);
 		if(question==null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}

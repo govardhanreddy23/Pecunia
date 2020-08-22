@@ -1,6 +1,5 @@
 package com.capg.otms.test.model;
 
-
 public class User {
 
 	private long userId ;
@@ -11,8 +10,6 @@ public class User {
 	
 	public User() { }
 	
-	
-
 	public User(long userId, String userName, Test userTest, boolean isAdmin, String userPassword) {
 		super();
 		this.userId = userId;
@@ -21,9 +18,6 @@ public class User {
 		this.isAdmin = isAdmin;
 		this.userPassword = userPassword;
 	}
-
-
-
 
 	public long getUserId() {
 		return userId;
@@ -63,7 +57,5 @@ public class User {
 
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
-	}
-	
-	
+	}	
 }
