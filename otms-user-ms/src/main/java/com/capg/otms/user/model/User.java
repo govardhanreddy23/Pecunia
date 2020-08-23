@@ -1,14 +1,15 @@
 package com.capg.otms.user.model;
 
-	import javax.persistence.Entity;
-	import javax.persistence.Id;
-	import javax.persistence.Table;
 
-	@Entity
+	
+	import javax.persistence.*;
+
+@Entity
 	@Table(name = "user_info")
 	public class User {
 
 		@Id
+		@GeneratedValue(strategy = GenerationType.AUTO)
 		private long userId ;
 		private String userName ;
 		private long userTest ;
@@ -16,15 +17,7 @@ package com.capg.otms.user.model;
 		private String userPassword;
 		
 		public User() { }
-	
-		public User(long userId, String userName, long userTest, boolean isAdmin, String userPassword) {
-			super();
-			this.userId = userId;
-			this.userName = userName;
-			this.userTest = userTest;
-			this.isAdmin = isAdmin;
-			this.userPassword = userPassword;
-		}
+
 
 		public long getUserId() {
 			return userId;
@@ -64,7 +57,7 @@ package com.capg.otms.user.model;
 
 		public void setUserPassword(String userPassword) {
 			this.userPassword = userPassword;
-		}		
+		}
+		
+		
 	}
-
-

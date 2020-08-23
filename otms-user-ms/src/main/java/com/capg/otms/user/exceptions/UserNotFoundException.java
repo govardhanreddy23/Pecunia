@@ -7,5 +7,3 @@
 			super(message);
 		}
 	}
-
-

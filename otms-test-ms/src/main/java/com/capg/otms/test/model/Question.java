@@ -1,6 +1,11 @@
 package com.capg.otms.test.model;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
 public class Question{
 
 	

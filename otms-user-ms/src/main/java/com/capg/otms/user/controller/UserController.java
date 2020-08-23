@@ -3,10 +3,13 @@ package com.capg.otms.user.controller;
 
 	import java.net.URISyntaxException;
 	import java.util.List;
+	import java.util.Set;
 
 	import javax.annotation.PostConstruct;
 
 	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.http.HttpStatus;
+	import org.springframework.http.ResponseEntity;
 	import org.springframework.web.bind.annotation.DeleteMapping;
 	import org.springframework.web.bind.annotation.GetMapping;
 	import org.springframework.web.bind.annotation.PathVariable;
@@ -25,14 +28,6 @@ package com.capg.otms.user.controller;
 	public class UserController {
 		@Autowired
 		IUserService service;
-		
-		@PostConstruct
-		public void addDummyUser() {
-			User user=new User(101452641L,"radhika",1011102L,true,"password");
-			service.addUser(user);
-			User user1=new User(124513146L,"srilatha",1022112L,false,"abcd");
-			service.addUser(user1);
-		}
 		
 		@PostMapping("/users/add")
 		public User addUser(@RequestBody User user){
@@ -59,6 +54,10 @@ package com.capg.otms.user.controller;
 			return service.getAllUsers();
 		}
 		
+		
+		
+	
+		
 		@GetMapping("/admin/message")
 		public String getMessage() {
 			return "Hello Admin";
@@ -78,9 +77,9 @@ package com.capg.otms.user.controller;
 		public Test addTest(@RequestBody Test test) {
 			return service.addTest(test);
 		}
-	@PutMapping("/admin/update/test")
-		public Test updateTest(@RequestBody Test test) throws RestClientException, URISyntaxException {
-			return service.updateTest(test);
+	@PutMapping("/admin/update/test/{testId}")
+		public Test updateTest(@RequestBody Test test, @PathVariable long testId) throws RestClientException, URISyntaxException {
+			return service.updateTest(test,testId);
 		}
 	@DeleteMapping("/admin/delete/test/id/{testId}")
 		public Test deleteTest(@PathVariable long testId) throws RestClientException, URISyntaxException {
@@ -98,13 +97,32 @@ package com.capg.otms.user.controller;
 	{
 		return service.updateQuestions(testId, questionId,question);
 	}
-				
+	
+	
    @DeleteMapping("/delete/question/{testId}/{questionId}")
 	public Question deleteQuestion(@PathVariable long testId, @PathVariable long questionId) throws RestClientException, URISyntaxException
 	{
 		return service.deleteQuestions(testId, questionId);
 	}
-   }
-	
 
+		@GetMapping("/user/test/result/{testId}")
+		public double getResult(@PathVariable long testId) {
+			return service.getResult(testId);
 
+		}
+		@GetMapping("/user/admin/validate/{userName}/{userPassword}")
+		public ResponseEntity<Boolean> validateAdmin(@PathVariable String userName, @PathVariable String userPassword) {
+			boolean valid =  service.validateAdmin(userName,userPassword);
+			return new ResponseEntity<Boolean>(valid,HttpStatus.ACCEPTED);
+		}
+		@GetMapping("/user/validate/{userName}/{userPassword}")
+		public ResponseEntity<Boolean> validateUser(@PathVariable String userName, @PathVariable String userPassword) {
+			boolean valid =  service.validateUser(userName,userPassword);
+			return new ResponseEntity<Boolean>(valid, HttpStatus.ACCEPTED);
+		}
+		@GetMapping("/test/questions/{testId}")
+		public List<Question> getTestQuestions(@PathVariable long testId){
+			return service.getTestQuestions(testId);
+		}
+
+	}

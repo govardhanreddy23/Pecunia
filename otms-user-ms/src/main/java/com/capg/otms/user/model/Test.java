@@ -1,14 +1,18 @@
 package com.capg.otms.user.model;
 
+
+
 	import java.time.LocalDateTime;
 	import java.time.LocalTime;
 	import java.util.Set;
 
 	public class Test {
 
+
 		private long testId; 
 		private String testTitle;
 		private LocalTime testDuration;
+
 		private Set<Long> testQuestions;
 		private double testTotalMarks;
 		private double testMarksScored;
@@ -16,8 +20,10 @@ package com.capg.otms.user.model;
 		private LocalDateTime startTime;
 		private LocalDateTime endTime;
 		
+		
 		public Test() {}
 		
+
 		public Test(long testId, String testTitle, LocalTime testDuration, Set<Long> testQuestions, double testTotalMarks,
 				double testMarksScored, long currentQuestion, LocalDateTime startTime, LocalDateTime endTime) {
 			super();
@@ -32,53 +38,66 @@ package com.capg.otms.user.model;
 			this.endTime = endTime;
 		}
 
+
 		public long getTestId() {
 			return testId;
 		}
+
 
 		public void setTestId(long testId) {
 			this.testId = testId;
 		}
 
+
 		public String getTestTitle() {
 			return testTitle;
 		}
+
 
 		public void setTestTitle(String testTitle) {
 			this.testTitle = testTitle;
 		}
 
+
 		public LocalTime getTestDuration() {
 			return testDuration;
 		}
 
+
 		public void setTestDuration(LocalTime testDuration) {
 			this.testDuration = testDuration;
 		}
-		
+
+
 		public Set<Long> getTestQuestions() {
 			return testQuestions;
 		}
+
 
 		public void setTestQuestions(Set<Long> testQuestions) {
 			this.testQuestions = testQuestions;
 		}
 
+
 		public double getTestTotalMarks() {
 			return testTotalMarks;
 		}
+
 
 		public void setTestTotalMarks(double testTotalMarks) {
 			this.testTotalMarks = testTotalMarks;
 		}
 
+
 		public double getTestMarksScored() {
 			return testMarksScored;
 		}
 
+
 		public void setTestMarksScored(double testMarksScored) {
 			this.testMarksScored = testMarksScored;
 		}
+
 
 		public long getCurrentQuestion() {
 			return currentQuestion;
@@ -94,17 +113,20 @@ package com.capg.otms.user.model;
 			return startTime;
 		}
 
+
 		public void setStartTime(LocalDateTime startTime) {
 			this.startTime = startTime;
 		}
-		
+
+
 		public LocalDateTime getEndTime() {
 			return endTime;
 		}
 
+
 		public void setEndTime(LocalDateTime endTime) {
 			this.endTime = endTime;
-		}		
+		}
+		
+		
 	}
-
-

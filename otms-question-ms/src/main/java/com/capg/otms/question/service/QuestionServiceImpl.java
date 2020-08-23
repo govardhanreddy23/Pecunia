@@ -1,11 +1,14 @@
 package com.capg.otms.question.service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.capg.otms.question.exception.QuestionNotFoundException;
 import com.capg.otms.question.model.Question;
 import com.capg.otms.question.repository.QuestionRepository;
 
@@ -16,6 +19,7 @@ public class QuestionServiceImpl implements IQuestionService {
 	
 	@Override
 	public ResponseEntity<List<Question>> getListOfQuestions() {
+		// TODO Auto-generated method stub
 		return new ResponseEntity<>(questionRepo.findAll(),HttpStatus.OK);
 	}
 	
