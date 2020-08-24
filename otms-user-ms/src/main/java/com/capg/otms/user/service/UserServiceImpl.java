@@ -179,4 +179,17 @@ package com.capg.otms.user.service;
 			}
 			return questions;
 		}
+		@Override
+		public double validateQuestion(long questionId,int chosenAnswer) {
+			// TODO Auto-generated method stub
+			Question question=rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
+			question.setChosenAnswer(chosenAnswer);
+			if(question.getChosenAnswer()==question.getQuestionAnswer()) {
+				question.setMarksScored(question.getQuestionMarks());
+			}
+			else {
+				question.setMarksScored(0);
+			}
+			return question.getMarksScored();
+		}
 	}

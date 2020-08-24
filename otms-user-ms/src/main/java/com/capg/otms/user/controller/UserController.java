@@ -124,5 +124,10 @@ package com.capg.otms.user.controller;
 		public List<Question> getTestQuestions(@PathVariable long testId){
 			return service.getTestQuestions(testId);
 		}
+		@GetMapping("/users/question/{questionId}/validate/{chosenAnswer}")
+		public ResponseEntity<Double> validateQuestion(@PathVariable long questionId, @PathVariable int chosenAnswer){
+			double result = service.validateQuestion(questionId,chosenAnswer);
+			return new ResponseEntity<Double>(result,HttpStatus.ACCEPTED);
+		}
 
 	}
