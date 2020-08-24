@@ -113,14 +113,14 @@ package com.capg.otms.user.service;
 		
 		@Override
 		public Question updateQuestions(long testId, long questionId,Question question) throws RestClientException, URISyntaxException {
-			
+			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
 			Question updateQuestion = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
-			if(question.getQuestionId()==updateQuestion.getQuestionId()) {
+			if(test.getTestQuestions().contains(questionId) ){
 				
-			rt.put(new URI("http://localhost:8030/question/update/"+questionId),updateQuestion);
+			rt.put(new URI("http://localhost:8030/question/update/"+questionId),question);
 			rt.put(new URI("http://localhost:8020/test/assign/"+testId+"/question/"+questionId),null);
 			}
-			return question;
+			return updateQuestion;
 		}
 		
 		@Override

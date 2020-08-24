@@ -53,11 +53,6 @@ package com.capg.otms.user.controller;
 		public List<User> getAllUsers() {
 			return service.getAllUsers();
 		}
-		
-		
-		
-	
-		
 		@GetMapping("/admin/message")
 		public String getMessage() {
 			return "Hello Admin";
