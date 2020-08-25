@@ -48,6 +48,7 @@ package com.capg.otms.user.service;
 			user.setUserPassword(newUser.getUserPassword());
 			user.setUserTest(newUser.getUserTest());
 			user.setAdmin(newUser.isAdmin());
+			repo.save(user);
 			return user;
 		}
 
@@ -67,17 +68,6 @@ package com.capg.otms.user.service;
 			// TODO Auto-generated method stub
 			return repo.getUserByName(userName);
 			}
-		
-		public boolean assignTest(long userId, long testId) {
-			// TODO Auto-generated method stub
-			User user=repo.getOne(userId);
-			if(user==null) {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-			}
-			user.setUserTest(testId);
-			return true;
-			
-		}
 		
 		@Override
 		public Test deleteTest(long testId) throws RestClientException, URISyntaxException {
@@ -191,5 +181,20 @@ package com.capg.otms.user.service;
 				question.setMarksScored(0);
 			}
 			return question.getMarksScored();
+		}
+		@Override
+		public boolean assignTest(long userId, long testId) {
+			// TODO Auto-generated method stub
+			boolean status=true;
+			User user=repo.getOne(userId);
+			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
+			if(user!=null && !user.isAdmin() && test!=null) {
+				user.setUserTest(testId);
+				repo.save(user);
+				return status;
+			}
+			else {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+			}		
 		}
 	}

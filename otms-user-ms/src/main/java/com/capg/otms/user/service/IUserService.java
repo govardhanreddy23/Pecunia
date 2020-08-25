@@ -32,4 +32,5 @@ package com.capg.otms.user.service;
 
 		List<Question> getTestQuestions(long testId);
 		double validateQuestion(long questionId, int chosenAnswer);
+		boolean assignTest(long userId, long testId);
 	}
