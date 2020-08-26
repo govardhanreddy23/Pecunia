@@ -16,7 +16,7 @@ package com.capg.otms.user.service;
 	import org.springframework.web.server.ResponseStatusException;
 
 	import com.capg.otms.user.model.Question;
-	import com.capg.otms.user.model.Test;
+	import com.capg.otms.user.model.TestBean;
 	import com.capg.otms.user.model.User;
 	import com.capg.otms.user.repository.IUserRepo;
 
@@ -70,27 +70,27 @@ package com.capg.otms.user.service;
 			}
 		
 		@Override
-		public Test deleteTest(long testId) throws RestClientException, URISyntaxException {
+		public TestBean deleteTest(long testId) throws RestClientException, URISyntaxException {
 			// TODO Auto-generated method stub
-			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
+			TestBean testBean = rt.getForObject("http://localhost:8020/test/id/"+testId,TestBean.class);
 			//test = rt.postForObject("http://localhost:8020/test/delete/id/", test, Test.class);
 			rt.delete(new URI("http://localhost:8020/test/delete/id/"+testId));
-			return test;
+			return testBean;
 		}
 		
 		@Override
-		public Test updateTest(Test test, long testId) throws RestClientException, URISyntaxException {
+		public TestBean updateTest(TestBean testBean, long testId) throws RestClientException, URISyntaxException {
 			// TODO Auto-generated method stub
-			if(test!=null) {
-				rt.put(new URI("http://localhost:8020/test/update/"+testId), test);
+			if(testBean!=null) {
+				rt.put(new URI("http://localhost:8020/test/update/"+testId), testBean);
 			}
-			return test;
+			return testBean;
 		}
 		
 		@Override
-		public Test addTest(Test test) {
+		public TestBean addTest(TestBean testBean) {
 			// TODO Auto-generated method stub
-			return rt.postForObject("http://localhost:8020/test/add", test, Test.class);
+			return rt.postForObject("http://localhost:8020/test/add", testBean, TestBean.class);
 		}
 		
 		@Override
@@ -103,9 +103,9 @@ package com.capg.otms.user.service;
 		
 		@Override
 		public Question updateQuestions(long testId, long questionId,Question question) throws RestClientException, URISyntaxException {
-			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
+			TestBean testBean = rt.getForObject("http://localhost:8020/test/id/"+testId,TestBean.class);
 			Question updateQuestion = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
-			if(test.getTestQuestions().contains(questionId) ){
+			if(testBean.getTestQuestions().contains(questionId) ){
 				
 			rt.put(new URI("http://localhost:8030/question/update/"+questionId),question);
 			rt.put(new URI("http://localhost:8020/test/assign/"+testId+"/question/"+questionId),null);
@@ -116,14 +116,14 @@ package com.capg.otms.user.service;
 		@Override
 		public Question deleteQuestions(long testId, long questionId) throws RestClientException, URISyntaxException {
 		
-			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
+			TestBean testBean = rt.getForObject("http://localhost:8020/test/id/"+testId,TestBean.class);
 			Question question = rt.getForObject("http://localhost:8030/question/id/"+questionId, Question.class);
-			if(test!=null) {
+			if(testBean!=null) {
 				rt.delete(new URI("http://localhost:8030/question/delete/id/"+questionId));
 				//test.getTestQuestions().remove(question.getQuestionId());
 			}
-			test.getTestQuestions().remove(questionId);
-			rt.put(new URI("http://localhost:8020/test/update/"+testId), test);
+			testBean.getTestQuestions().remove(questionId);
+			rt.put(new URI("http://localhost:8020/test/update/"+testId), testBean);
 			return question;
 		}
 		@Override
@@ -150,17 +150,17 @@ package com.capg.otms.user.service;
 		}
 		@Override
 		public double getResult(long testId) {
-			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
+			TestBean testBean = rt.getForObject("http://localhost:8020/test/id/"+testId,TestBean.class);
 			double result =0;
 			result = rt.getForObject("http://localhost:8020/test/calculate/"+testId,Double.class);
-			test.setTestMarksScored(result);
-			return test.getTestMarksScored();
+			testBean.setTestMarksScored(result);
+			return testBean.getTestMarksScored();
 		}
 
 		@Override
 		public List<Question> getTestQuestions(long testId) {
-			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId, Test.class);
-			List<Long> qIds = new ArrayList(test.getTestQuestions());
+			TestBean testBean = rt.getForObject("http://localhost:8020/test/id/"+testId, TestBean.class);
+			List<Long> qIds = new ArrayList(testBean.getTestQuestions());
 			List<Question> questions = new ArrayList<>();
 			for(int i=0; i<qIds.size();i++) {
 				Question q = rt.getForObject("http://localhost:8030/question/id/"+qIds.get(i), Question.class);
@@ -187,8 +187,8 @@ package com.capg.otms.user.service;
 			// TODO Auto-generated method stub
 			boolean status=true;
 			User user=repo.getOne(userId);
-			Test test = rt.getForObject("http://localhost:8020/test/id/"+testId,Test.class);
-			if(user!=null && !user.isAdmin() && test!=null) {
+			TestBean testBean = rt.getForObject("http://localhost:8020/test/id/"+testId,TestBean.class);
+			if(user!=null && !user.isAdmin() && testBean!=null) {
 				user.setUserTest(testId);
 				repo.save(user);
 				return status;

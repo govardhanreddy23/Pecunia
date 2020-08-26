@@ -5,7 +5,7 @@ public class User {
 
 	private long userId ;
 	private String userName ;
-	private Test userTest ;
+	private TestBean userTest ;
 	private boolean isAdmin ;
 	private String userPassword;
 	
@@ -13,7 +13,7 @@ public class User {
 	
 	
 
-	public User(long userId, String userName, Test userTest, boolean isAdmin, String userPassword) {
+	public User(long userId, String userName, TestBean userTest, boolean isAdmin, String userPassword) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -41,11 +41,11 @@ public class User {
 		this.userName = userName;
 	}
 
-	public Test getUserTest() {
+	public TestBean getUserTest() {
 		return userTest;
 	}
 
-	public void setUserTest(Test userTest) {
+	public void setUserTest(TestBean userTest) {
 		this.userTest = userTest;
 	}
 

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 	import org.springframework.web.client.RestClientException;
 
 	import com.capg.otms.user.model.Question;
-	import com.capg.otms.user.model.Test;
+	import com.capg.otms.user.model.TestBean;
 	import com.capg.otms.user.model.User;
 	import com.capg.otms.user.service.IUserService;
 
@@ -71,15 +71,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 			}
 		
 		@PostMapping("/admin/add/test")
-		public Test addTest(@RequestBody Test test) {
-			return service.addTest(test);
+		public TestBean addTest(@RequestBody TestBean testBean) {
+			return service.addTest(testBean);
 		}
 	@PutMapping("/admin/update/test/{testId}")
-		public Test updateTest(@RequestBody Test test, @PathVariable long testId) throws RestClientException, URISyntaxException {
-			return service.updateTest(test,testId);
+		public TestBean updateTest(@RequestBody TestBean testBean, @PathVariable long testId) throws RestClientException, URISyntaxException {
+			return service.updateTest(testBean,testId);
 		}
 	@DeleteMapping("/admin/delete/test/id/{testId}")
-		public Test deleteTest(@PathVariable long testId) throws RestClientException, URISyntaxException {
+		public TestBean deleteTest(@PathVariable long testId) throws RestClientException, URISyntaxException {
 			return service.deleteTest(testId);
 		}
 	

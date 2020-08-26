@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.capg.otms.test.model.Question;
-import com.capg.otms.test.model.Test;
+import com.capg.otms.test.model.TestBean;
 import com.capg.otms.test.service.TestService;
 
 
@@ -40,33 +40,33 @@ public class TestController {
 	public void init() {
 	Set<Long> questions=new HashSet<>();
 	//questions.addAll(Arrays.asList(109L,101L,102L));
-	Test test=new Test( "spring Test", LocalTime.of(1, 30), questions, 100, 0, 1L, LocalDateTime.of(2020, 05,2, 14, 0), LocalDateTime.of(2020, 05,2, 15, 30));
-	service.addtest(test);
+	TestBean testBean=new TestBean( "spring Test", LocalTime.of(1, 30), questions, 100, 0, 1L, LocalDateTime.of(2020, 05,2, 14, 0), LocalDateTime.of(2020, 05,2, 15, 30));
+	service.addtest(testBean);
 	}
 	
 	@GetMapping("/id/{testId}")
-	public ResponseEntity<Test> getTest(@PathVariable long testId){
+	public ResponseEntity<TestBean> getTest(@PathVariable long testId){
 	return service.getTest(testId);	
 	}
 	@GetMapping("/all")
-	public ResponseEntity<List<Test>> getAllTests(){
+	public ResponseEntity<List<TestBean>> getAllTests(){
 	return service.fetchAllTests();	
 	}
 	@PostMapping("/add")
-	public ResponseEntity<Test> addTest(@RequestBody Test test){
-		return service.addtest(test);
+	public ResponseEntity<TestBean> addTest(@RequestBody TestBean testBean){
+		return service.addtest(testBean);
 	}
 	@PutMapping("/update/{testId}")
-	public ResponseEntity<Test> updateTest(@RequestBody Test test,@PathVariable long testId){
-		return service.updateTest(test ,testId);
+	public ResponseEntity<TestBean> updateTest(@RequestBody TestBean testBean,@PathVariable long testId){
+		return service.updateTest(testBean ,testId);
 	}	
 	@PutMapping("/assign/{testId}/question/{questionId}")
-	public ResponseEntity<Test> assignQuestion(@PathVariable long testId, @PathVariable long questionId) {
+	public ResponseEntity<TestBean> assignQuestion(@PathVariable long testId, @PathVariable long questionId) {
 		return service.assignQuestion(testId, questionId);
 	}
 	
 	@DeleteMapping("delete/id/{testId}")
-	public ResponseEntity<Test> deleteTest(@PathVariable long testId){
+	public ResponseEntity<TestBean> deleteTest(@PathVariable long testId){
 	return service.deleteTest(testId);
 	}
 	@GetMapping("/calculate/{testId}")
@@ -78,7 +78,7 @@ public class TestController {
 		return service.fetchQuestion(questionId);
 	}
 	@PutMapping("/setTestQuestions/testId/{testId}")
-	public ResponseEntity<Test> setTestQuestions(@PathVariable long testId, @RequestBody Set<Long> qIds){
+	public ResponseEntity<TestBean> setTestQuestions(@PathVariable long testId, @RequestBody Set<Long> qIds){
 		return service.setTestQuestions(testId, qIds);
 	}
 	@GetMapping("/questions/{testId}")
