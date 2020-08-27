@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 	import org.springframework.web.client.RestClientException;
 
 	import com.capg.otms.user.model.Question;
-	import com.capg.otms.user.model.Test;
+	import com.capg.otms.user.model.TestBean;
 	import com.capg.otms.user.model.User;
 	import com.capg.otms.user.service.IUserService;
 
@@ -67,15 +67,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 			}
 		
 		@PostMapping("/admin/add/test")
-		public Test addTest(@RequestBody Test test) {
-			return service.addTest(test);
+		public TestBean addTest(@RequestBody TestBean testBean) {
+			return service.addTest(testBean);
 		}
 	@PutMapping("/admin/update/test/{testId}")
-		public Test updateTest(@RequestBody Test test, @PathVariable long testId) throws RestClientException, URISyntaxException {
-			return service.updateTest(test,testId);
+		public TestBean updateTest(@RequestBody TestBean testBean, @PathVariable long testId) throws RestClientException, URISyntaxException {
+			return service.updateTest(testBean,testId);
 		}
 	@DeleteMapping("/admin/delete/test/id/{testId}")
-		public Test deleteTest(@PathVariable long testId) throws RestClientException, URISyntaxException {
+		public TestBean deleteTest(@PathVariable long testId) throws RestClientException, URISyntaxException {
 			return service.deleteTest(testId);
 		}
 	
@@ -121,6 +121,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 		public ResponseEntity<Double> validateQuestion(@PathVariable long questionId, @PathVariable int chosenAnswer){
 			double result = service.validateQuestion(questionId,chosenAnswer);
 			return new ResponseEntity<Double>(result,HttpStatus.ACCEPTED);
+		}
+		@PutMapping("/user/{userId}/assign/{testId}")
+		public ResponseEntity<Boolean> assignTest(@PathVariable long userId,@PathVariable long testId){
+			boolean result = service.assignTest(userId, testId);
+			return new ResponseEntity<Boolean>(result,HttpStatus.OK);
 		}
 
 	}

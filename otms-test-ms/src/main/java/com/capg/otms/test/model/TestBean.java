@@ -1,4 +1,5 @@
-package com.capg.otms.question.model;
+package com.capg.otms.test.model;
+
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -6,14 +7,19 @@ import java.util.Set;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class Test {
+@Entity
+@Table(name = "test_info")
+public class TestBean {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long testId; 
 	private String testTitle;
 	@DateTimeFormat(pattern="hh:mm:ss")
@@ -21,13 +27,13 @@ public class Test {
 	@ElementCollection
 	private Set<Long> testQuestions;
 	private double testTotalMarks;
-	private double testMarksScored;
-	private long currentQuestion;
+	private double testMarksScored=0;
+	private long currentQuestion=1;
 	@DateTimeFormat(pattern="yyyy/MM/ddThh:mm:ss")
 	private LocalDateTime startTime;
 	@DateTimeFormat(pattern="yyyy/MM/ddThh:mm:ss")
 	private LocalDateTime endTime;
-	public Test() {
+	public TestBean() {
 		
 	}
 	public long getTestId() {
@@ -84,10 +90,9 @@ public class Test {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
-	public Test(long testId, String testTitle, LocalTime testDuration, Set<Long> testQuestions, double testTotalMarks,
+	public TestBean( String testTitle, LocalTime testDuration, Set<Long> testQuestions, double testTotalMarks,
 			double testMarksScored, long currentQuestion, LocalDateTime startTime, LocalDateTime endTime) {
 		super();
-		this.testId = testId;
 		this.testTitle = testTitle;
 		this.testDuration = testDuration;
 		this.testQuestions = testQuestions;

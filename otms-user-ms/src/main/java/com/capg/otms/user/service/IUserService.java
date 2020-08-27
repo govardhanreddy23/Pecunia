@@ -9,7 +9,7 @@ package com.capg.otms.user.service;
 	import org.springframework.web.client.RestClientException;
 
 	import com.capg.otms.user.model.Question;
-	import com.capg.otms.user.model.Test;
+	import com.capg.otms.user.model.TestBean;
 	import com.capg.otms.user.model.User;
 
 	public interface IUserService {
@@ -19,9 +19,9 @@ package com.capg.otms.user.service;
 		User getUser(long userId);
 		List<User> getAllUsers();
 		User getUserByName(String userName);
-		Test deleteTest(long testId) throws RestClientException, URISyntaxException;
-		Test updateTest(Test test,long testId) throws RestClientException, URISyntaxException;
-		Test addTest(Test test);
+		TestBean deleteTest(long testId) throws RestClientException, URISyntaxException;
+		TestBean updateTest(TestBean testBean,long testId) throws RestClientException, URISyntaxException;
+		TestBean addTest(TestBean testBean);
 		Question addQuestions(long testId, Question question) throws RestClientException, URISyntaxException;
 		Question deleteQuestions(long testId, long QuestionId) throws RestClientException, URISyntaxException;
 		Question updateQuestions(long testId, long questionId, Question question)
@@ -32,4 +32,5 @@ package com.capg.otms.user.service;
 
 		List<Question> getTestQuestions(long testId);
 		double validateQuestion(long questionId, int chosenAnswer);
+		boolean assignTest(long userId, long testId);
 	}

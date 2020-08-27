@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.capg.otms.test.exception.TestNotFoundException;
 import com.capg.otms.test.model.Question;
-import com.capg.otms.test.model.Test;
+import com.capg.otms.test.model.TestBean;
 import com.capg.otms.test.repository.ITestJpaRepo;
 
 @Service
@@ -32,12 +32,12 @@ public class TestService implements ITestService{
 	double score;
 	
 	@Override
-	public ResponseEntity<List<Test>> fetchAllTests(){	
+	public ResponseEntity<List<TestBean>> fetchAllTests(){	
 		return new ResponseEntity<>(testRepo.findAll(),HttpStatus.OK);
 	}
 	
 	@Override
-	public ResponseEntity<Test> getTest(long testId) {
+	public ResponseEntity<TestBean> getTest(long testId) {
 		
 		if(!testRepo.existsById(testId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -47,8 +47,8 @@ public class TestService implements ITestService{
 
   @Override
  @Transactional
-  public ResponseEntity<Test> addtest (Test test) {
-	  return new ResponseEntity<>(testRepo.save(test),HttpStatus.OK);
+  public ResponseEntity<TestBean> addtest (TestBean testBean) {
+	  return new ResponseEntity<>(testRepo.save(testBean),HttpStatus.OK);
   }	
   
 	@Override
@@ -63,20 +63,20 @@ public class TestService implements ITestService{
 	
 	@Override
 	@Transactional
-	public ResponseEntity<Test> updateTest(Test newTestData,long testId) {
+	public ResponseEntity<TestBean> updateTest(TestBean newTestData,long testId) {
 		if(!testRepo.existsById(testId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		Test test=testRepo.getOne(testId);		
-		test.setTestTitle(newTestData.getTestTitle());
-		test.setTestDuration(newTestData.getTestDuration());
-		test.setTestQuestions(newTestData.getTestQuestions());
-		test.setTestTotalMarks(newTestData.getTestTotalMarks());
-		test.setTestMarksScored(newTestData.getTestMarksScored());
-		test.setCurrentQuestion(newTestData.getCurrentQuestion());
-		test.setStartTime(newTestData.getStartTime());
-		test.setEndTime(newTestData.getEndTime());
-		return new ResponseEntity<>(testRepo.save(test),HttpStatus.OK);
+		TestBean testBean=testRepo.getOne(testId);		
+		testBean.setTestTitle(newTestData.getTestTitle());
+		testBean.setTestDuration(newTestData.getTestDuration());
+		testBean.setTestQuestions(newTestData.getTestQuestions());
+		testBean.setTestTotalMarks(newTestData.getTestTotalMarks());
+		testBean.setTestMarksScored(newTestData.getTestMarksScored());
+		testBean.setCurrentQuestion(newTestData.getCurrentQuestion());
+		testBean.setStartTime(newTestData.getStartTime());
+		testBean.setEndTime(newTestData.getEndTime());
+		return new ResponseEntity<>(testRepo.save(testBean),HttpStatus.OK);
 }
 
 	@Override
@@ -85,8 +85,8 @@ public class TestService implements ITestService{
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		double score=0;
-		Test test = testRepo.getOne(testId);
-		List<Long> qIds = new ArrayList(test.getTestQuestions());
+		TestBean testBean = testRepo.getOne(testId);
+		List<Long> qIds = new ArrayList(testBean.getTestQuestions());
 		for(int i=0; i<qIds.size();i++) {
 			Question q = rt.getForObject("http://localhost:8030/question/id/"+qIds.get(i), Question.class);
 			if(q==null) {
@@ -115,8 +115,8 @@ public class TestService implements ITestService{
 		if(!testRepo.existsById(testId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		Test test = testRepo.getOne(testId);
-		List<Long> qIds = new ArrayList(test.getTestQuestions());
+		TestBean testBean = testRepo.getOne(testId);
+		List<Long> qIds = new ArrayList(testBean.getTestQuestions());
 		List<Question> questions = new ArrayList<>();
 		for(int i=0; i<qIds.size();i++) {
 			Question q = rt.getForObject("http://localhost:8030/question/id/"+qIds.get(i), Question.class);
@@ -130,12 +130,12 @@ public class TestService implements ITestService{
 		return new ResponseEntity<>(questions,HttpStatus.OK);
 	}
 	@Override
-	public ResponseEntity<Test> setTestQuestions(long testId, Set<Long> qIds) {
+	public ResponseEntity<TestBean> setTestQuestions(long testId, Set<Long> qIds) {
 		if(!testRepo.existsById(testId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		try {
-		Test test = testRepo.getOne(testId);
+		TestBean testBean = testRepo.getOne(testId);
 		List<Long> qIds2 = new ArrayList(qIds);
 		for(int i=0; i<qIds2.size();i++) {
 			Question q = rt.getForObject("http://localhost:8030/question/id/"+qIds2.get(i), Question.class);
@@ -143,21 +143,21 @@ public class TestService implements ITestService{
 				return new ResponseEntity(HttpStatus.NOT_FOUND);
 			}
 		}
-		test.setTestQuestions(qIds);
+		testBean.setTestQuestions(qIds);
 		
-		return new ResponseEntity<>(testRepo.save(test),HttpStatus.OK);
+		return new ResponseEntity<>(testRepo.save(testBean),HttpStatus.OK);
 		}catch(HttpClientErrorException e) {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@Override
-public ResponseEntity<Test> assignQuestion(long testId, long questionId) {
+public ResponseEntity<TestBean> assignQuestion(long testId, long questionId) {
 		if(!testRepo.existsById(testId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		Test test = testRepo.getOne(testId);
-		test.getTestQuestions().add(questionId);
-		 return new ResponseEntity<>(testRepo.save(test),HttpStatus.OK);
+		TestBean testBean = testRepo.getOne(testId);
+		testBean.getTestQuestions().add(questionId);
+		 return new ResponseEntity<>(testRepo.save(testBean),HttpStatus.OK);
 	}
 }

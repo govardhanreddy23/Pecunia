@@ -6,7 +6,7 @@ package com.capg.otms.user.model;
 	import java.time.LocalTime;
 	import java.util.Set;
 
-	public class Test {
+	public class TestBean {
 
 
 		private long testId; 
@@ -21,10 +21,10 @@ package com.capg.otms.user.model;
 		private LocalDateTime endTime;
 		
 		
-		public Test() {}
+		public TestBean() {}
 		
 
-		public Test(long testId, String testTitle, LocalTime testDuration, Set<Long> testQuestions, double testTotalMarks,
+		public TestBean(long testId, String testTitle, LocalTime testDuration, Set<Long> testQuestions, double testTotalMarks,
 				double testMarksScored, long currentQuestion, LocalDateTime startTime, LocalDateTime endTime) {
 			super();
 			this.testId = testId;
