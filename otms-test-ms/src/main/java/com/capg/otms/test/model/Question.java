@@ -1,16 +1,10 @@
 package com.capg.otms.test.model;
 import java.util.List;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-
 public class Question{
 
-	
 	private long questionId;
-	
+
 	private List<String> questionOptions;
 	private String questionTitle;
 	private int questionAnswer;
@@ -19,9 +13,9 @@ public class Question{
 	private int chosenAnswer=0;
 
 	private double marksScored=0.0;
-	
+
 	public Question() { }
-	
+
 
 	public Question(long questionId, List<String> questionOptions, String questionTitle, int questionAnswer,
 			double questionMarks) {
@@ -101,8 +95,8 @@ public class Question{
 	public void setMarksScored(double marksScored) {
 		this.marksScored = marksScored;
 	}
-	
-	
-	
-	
+
+
+
+
 }

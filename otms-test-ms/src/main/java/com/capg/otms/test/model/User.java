@@ -8,10 +8,8 @@ public class User {
 	private TestBean userTest ;
 	private boolean isAdmin ;
 	private String userPassword;
-	
+
 	public User() { }
-	
-	
 
 	public User(long userId, String userName, TestBean userTest, boolean isAdmin, String userPassword) {
 		super();
@@ -21,9 +19,6 @@ public class User {
 		this.isAdmin = isAdmin;
 		this.userPassword = userPassword;
 	}
-
-
-
 
 	public long getUserId() {
 		return userId;
@@ -64,6 +59,4 @@ public class User {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-	
-	
 }

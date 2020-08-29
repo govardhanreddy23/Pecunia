@@ -45,9 +45,7 @@ package com.capg.otms.user.service;
 			// TODO Auto-generated method stub
 			User user = repo.getOne(newUser.getUserId());
 			user.setUserName(newUser.getUserName());
-			user.setUserPassword(newUser.getUserPassword());
-			user.setUserTest(newUser.getUserTest());
-			user.setAdmin(newUser.isAdmin());
+			user.setUserPassword(newUser.getUserPassword());		
 			repo.save(user);
 			return user;
 		}
