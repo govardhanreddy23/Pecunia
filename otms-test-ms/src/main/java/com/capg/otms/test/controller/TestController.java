@@ -36,7 +36,7 @@ public class TestController {
 	@PostConstruct
 	public void init() {
 	Set<Long> questions=new HashSet<>();
-	TestBean testBean=new TestBean( "spring Test", LocalTime.of(1, 30), questions, 100, 0, 1L, LocalDateTime.of(2020, 05,2, 14, 0), LocalDateTime.of(2020, 05,2, 15, 30));
+	TestBean testBean=new TestBean( "spring Test", LocalTime.of(1, 30), questions, 100, 0, 1L, LocalDateTime.of(2020, 10,10, 10, 0), LocalDateTime.of(2020, 10,10, 11, 0));
 	service.addtest(testBean);
 	}
 	

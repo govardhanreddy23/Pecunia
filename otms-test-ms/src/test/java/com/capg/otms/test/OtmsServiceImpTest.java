@@ -1,6 +1,8 @@
 package com.capg.otms.test;
 
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -11,11 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import com.capg.otms.test.model.TestBean;
 import com.capg.otms.test.service.TestService;
 
 
-//@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class OtmsServiceImpTest {
 	@MockBean
